@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { fetchNewListings } from '../actions';
+import { fetchEntities, fetchNewListings } from '../actions';
 
 import { STATUS_BAR_HEIGHT, SCREEN_WIDTH } from '../constants';
 import CompanyTitle from '../components/CompanyTitle';
@@ -108,21 +108,20 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state) {
-  console.debug("In FeedScreen: mapStateToProps(): state = ");
-  console.debug(state);
-  return {
-    newListingsData: state.newListings.data
-  }
-}
+const mapStateToProps = (state) => ({
+  newListingsData: state.newListings.data
+});
 
-function mapDispatchToProps(dispatch) {
-  return {
-    fetchNewListings: () => dispatch(fetchNewListings())
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  fetchNewListings: () => dispatch(fetchNewListings()),
+  onFetchMore() {
+    dispatch(fetchEntitites('Property', 'listHomes'))
+  },
+});
 
-export default connect(
+const FeedScreenContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(FeedScreen)
+
+export default FeedScreenContainer;

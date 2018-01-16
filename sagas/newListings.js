@@ -6,6 +6,7 @@ import {
 import { put, takeEvery } from 'redux-saga/effects';
 
 import getNewListings from '../api/newListings';
+import fetchEntitiesSaga from './fetchEntitiesSaga';
 
 function* fetchData(action) {
   try {
@@ -19,7 +20,12 @@ function* fetchData(action) {
 }
 
 function* newListingsSaga() {
+  // yield takeEvery('FETCH_ENTITIES', fetchEntitiesSaga('Property', 'listHomes'));
   yield takeEvery(FETCHING_NEW_LISTINGS, fetchData);
 }
 
-export default newListingsSaga;
+function *entitiesNewListingsSaga() {
+  yield takeEvery(FETCHING_NEW_LISTINGS, fetchEntitiesSaga('Property', 'listHomes'));
+}
+
+export default entitiesNewListingsSaga;

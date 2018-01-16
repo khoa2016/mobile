@@ -2,7 +2,7 @@ const homes = [
   {
     id: 1,
     picture: null,
-    cost: 10959999,
+    cost: 49999,
     numRooms: 5,
     numBaths: 3,
     size: 2208,

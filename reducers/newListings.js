@@ -13,6 +13,15 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
+    case 'APOLLO_QUERY_RESULT':
+    case 'FETCH_ENTITIES':
+      console.debug("In APOLLO_QUERY_RESULT -- reducers.newListings: type = ");
+      console.debug(type);
+      console.debug("In APOLLO_QUERY_RESULT -- reducers.newListings: payload = ");
+      console.debug(payload);
+      return {
+        ...state,
+      }
     case FETCHING_NEW_LISTINGS:
       return {
         ...state,
