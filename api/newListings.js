@@ -76,10 +76,30 @@ const homes = [
   }
 ];
 
+function statusHelper (response) {
+  if (response.status >= 200 && response.status < 300) {
+    return Promise.resolve(response)
+  } else {
+    return Promise.reject(new Error(response.statusText))
+  }
+}
+
 export default () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      return resolve(homes);
-    }, 1000);
-  });
+  // return new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     return resolve(homes);
+  //   }, 1000);
+  // });
+  return fetch('http://localhost:3000/homes')
+    .then(statusHelper)
+    .then((response) => {
+      console.debug('In api.newListings: (1) response from homes API = ');
+      console.debug(response);
+      return response.json();
+    })
+    .then((data) => {
+      console.debug('In api.newListings: (2) response from homes = ');
+      console.debug(data.results);
+      return data.results;
+    })
 }

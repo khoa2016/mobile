@@ -3,16 +3,18 @@ import {
   FETCHING_NEW_LISTINGS_FAILURE,
   FETCHING_NEW_LISTINGS_SUCCESS
 } from '../constants';
-import { put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import getNewListings from '../api/newListings';
 
 function* fetchData(action) {
   try {
-    const homes = yield getNewListings();
-    // console.debug("In newListingsSaga: homes = ");
-    // console.debug(homes);
-    yield put({ type: FETCHING_NEW_LISTINGS_SUCCESS, payload: homes });
+    const response = yield getNewListings();
+    // const response = yield call(fetch, 'http://localhost:3000/homes', { method: 'GET'});
+    // const results = response.json();
+    console.debug("In sagas.newListings: list of homes = ");
+    console.debug(response);
+    yield put({ type: FETCHING_NEW_LISTINGS_SUCCESS, payload: PaymentResponse });
   } catch (e) {
     yield put({ type: FETCHING_NEW_LISTINGS_FAILURE });
   }
@@ -23,4 +25,10 @@ function* newListingsSaga() {
   yield takeEvery(FETCHING_NEW_LISTINGS, fetchData);
 }
 
-export default newListingsSaga;
+function *rootSaga() {
+  yield [
+    newListingsSaga(),
+  ]
+}
+
+export default rootSaga;
