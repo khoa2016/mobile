@@ -12,7 +12,7 @@ import { Button, Card, Text } from 'react-native-elements';
 
 import { STATUS_BAR_HEIGHT, SCREEN_WIDTH } from '../constants';
 
-const NewListings = (props) => {
+const NewListings = ({data, onSelectHome, onSelectFavorite}) => {
 
   renderHomeDetails = (item, index) => (
     <View key={index}>
@@ -21,13 +21,13 @@ const NewListings = (props) => {
         imageStyleXX={styles.image}
         imageXX={{uri: `https://unsplash.it/100/100?image=${index}`}}
       >
-        <TouchableOpacity onPress={() => props.onSelectHome(item.id)}>
+        <TouchableOpacity onPress={() => onSelectHome(item.id)}>
           <Image
             style={styles.image}
             source={{uri: `https://unsplash.it/100/100?image=${index}`}}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.onSelectFavorite(item.id)}>
+        <TouchableOpacity onPress={() => onSelectFavorite(item.id)}>
           <Icon name="favorite-border" size={35} iconStyle={{position: 'absolute', zIndex: 2, color: 'white', top: -150, right: 10}} />
         </TouchableOpacity>
         <Text>${item.cost}</Text>
@@ -45,7 +45,7 @@ const NewListings = (props) => {
       </View>
 
       <ScrollView horizontal={true}>
-        {props.data.map(this.renderHomeDetails)}
+        {data.map(this.renderHomeDetails)}
       </ScrollView>
 
     </View>
