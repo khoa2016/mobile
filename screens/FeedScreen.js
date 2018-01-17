@@ -36,6 +36,9 @@ class FeedScreen extends React.Component {
   };
 
   renderNewListings() {
+    console.debug("In screens.FeedScreen: renderNewListings(): this.props = ");
+    console.debug(this.props);
+
     return (
       <View style={styles.container}>
         <View style={styles.companyTitle}>
