@@ -9,16 +9,14 @@ import getNewListings from '../api/newListings';
 
 function* fetchData(action) {
   try {
-    // const response = yield getNewListings();
     const [response] = yield all([
-      call(fetch, 'http://10.0.10.154:3000/homes', { method: 'GET' })
-    ]);
-    const [data] = yield all([
-      call(response, 'json')
+      call(getNewListings, action.payload)
     ]);
     console.debug("In sagas.newListings: list of homes = ");
-    console.debug(data);
-    yield put({ type: FETCHING_NEW_LISTINGS_SUCCESS, payload: response._bodyInit });
+    console.debug(response);
+    console.debug(`In sagas.newListings: action params = `);
+    console.debug(action);
+    yield put({ type: FETCHING_NEW_LISTINGS_SUCCESS, payload: response.data });
   } catch (e) {
     console.debug("In sagas.newListings: error in getting new listings: error = ");
     console.debug(e);

@@ -84,22 +84,25 @@ function statusHelper (response) {
   }
 }
 
-export default () => {
+export default (page = 1) => {
   // return new Promise((resolve, reject) => {
   //   setTimeout(() => {
   //     return resolve(homes);
   //   }, 1000);
   // });
-  return fetch('http://localhost:3000/homes')
+  // home 192.168.1.7
+  // work 10.0.10.154
+  console.debug(`In api.newListings: page # (${page})`);
+  return fetch(`http://192.168.1.7:3000/homes?_page=${page}&_limit=2`)
     .then(statusHelper)
-    .then((response) => {
-      console.debug('In api.newListings: (1) response from homes API = ');
+    .then(response => {
+      console.debug(`In api.newListings: page # (${page}), response from API = `);
       console.debug(response);
-      return response.json();
+      console.debug(response.headers);
+      const totalCount = response.headers.get('x-total-count');
+      console.debug(`total count = ${totalCount}`);
+      return {totalCount, data: response.json()};
     })
-    .then((data) => {
-      console.debug('In api.newListings: (2) response from homes = ');
-      console.debug(data.results);
-      return data.results;
-    })
+    .catch(error => Error)
+    .then(data => data)
 }

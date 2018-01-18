@@ -16,17 +16,18 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     case FETCHING_NEW_LISTINGS:
       return {
         ...state,
-        data: [],
+        data: [...state.data],
         isFetching: true
       }
     case FETCHING_NEW_LISTINGS_SUCCESS:
-      console.debug("In reducers.newListings: payload = ");
-      console.debug(payload);
-      return {
-        ...state,
-        isFetching: false,
-        data: payload
-      }
+      console.debug(`In reducers.newListings: # items (${payload.length}), state = `);
+      console.debug(state);
+      // return {
+      //   ...state,
+      //   isFetching: false,
+      //   data: payload
+      // };
+      return Object.assign({}, state, {isFetching: false, data: [...state.data, ...payload]});
     case FETCHING_NEW_LISTINGS_FAILURE:
       return {
         ...state,

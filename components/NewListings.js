@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -12,9 +13,13 @@ import { Button, Card, Text } from 'react-native-elements';
 
 import { STATUS_BAR_HEIGHT, SCREEN_WIDTH } from '../constants';
 
-const NewListings = ({data, onSelectHome, onSelectFavorite}) => {
+class NewListings extends React.PureComponent {
 
-  renderHomeDetails = (item, index) => (
+  state = {
+    page: 1
+  };
+
+  renderHomeDetails = ({item, index}) => (
     <View key={index}>
       <Card
         containerStyle={styles.cardStyle}
@@ -30,26 +35,45 @@ const NewListings = ({data, onSelectHome, onSelectFavorite}) => {
         <TouchableOpacity onPress={() => onSelectFavorite(item.id)}>
           <Icon name="favorite-border" size={35} iconStyle={{position: 'absolute', zIndex: 2, color: 'white', top: -150, right: 10}} />
         </TouchableOpacity>
+        <Text>ID: {item.id}</Text>
         <Text>${item.cost}</Text>
-        <Text>Line 2</Text>
         <Text>Line 3</Text>
         <Text>Line 4</Text>
       </Card>
     </View>
   );
 
-  return (
-    <View style={styles.container}>
-      <View>
-        <Text h5>New Listings</Text>
+  handleLoadMore = () => {
+    this.setState({
+      page: this.state.page + 1,
+    }, () => {
+      console.debug(`In components.newListings: handleLoadMore(): page num (${this.state.page}), loading more data ...`);
+      this.props.onLoadMore(this.state.page);
+    });
+  };
+
+  render() {
+    const { data } = this.props;
+    console.debug(`In components.NewListings: render(): # items (${data.length}), typeof (${typeof data}), data = `);
+    console.debug(data);
+
+    return (
+      <View style={styles.container}>
+        <View>
+          <Text h5>New Listings</Text>
+        </View>
+  
+        <FlatList
+          horizontal
+          data={data}
+          renderItem={this.renderHomeDetails}
+          keyExtractor={(item, index) => item.id}
+          onEndReached={this.handleLoadMore}
+          onEndThreshold={4}
+        />
       </View>
-
-      <ScrollView horizontal={true}>
-        {data.map(this.renderHomeDetails)}
-      </ScrollView>
-
-    </View>
-  )
+    )
+  }
 }
 
 const styles = StyleSheet.create({
